@@ -1,9 +1,12 @@
+const { log } = require("console");
 const express = require("express");
 const app = express();
 const path = require("path");
 
 
 const port = 3000;
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine" , "ejs");
 app.set("views", path.join(__dirname, "/views"));
@@ -14,9 +17,11 @@ app.get("/", (req,res) => {
 
 
 app.get("/ig/:username", (req,res) => {
-    const followers = ["neeti", "milee", "imneetiyadav"];
-    let {username} = req.params;
-    res.render("instagram.ejs", {username,followers});
+    let {username } = req.params;
+    const instaDeta = require("./data.json");
+    const data = instaDeta[username];
+    console.log(data);
+    res.render("instagram.ejs", {data});
 });
 app.get("/hello", (req,res) => {
     res.send("hello");
